@@ -1,0 +1,46 @@
+@Library('cummins-library')
+import org.foo.StageBuild
+
+StageBuild stageBuild = new StageBuild(this)
+  
+
+try {
+    node('master') {
+        stage('Basic Info'){
+        	echo 'Status: Initiation of pipeline: Accepted'
+        }
+        stage('SCM Checkout') {
+    		echo 'SCM checkout started'
+    		stageBuild.scmStageExecution()
+    	    echo 'SCM checkout finished'
+    	}
+        
+        stage('Build'){
+            echo 'Build job execution started'
+            stageBuild.buildStageExecution(SonarQube) //variable from boolean parameters in the pipeline job.
+            echo 'Build job execution finished'
+           
+        }
+        stage('Deploy'){
+            echo 'Deploy execution started'
+            stageBuild.deployStageExecution()
+            echo 'Deploy execution finished'
+        }
+        currentBuild.result = 'SUCCESS'
+    }
+
+}
+catch (Exception err) {
+    stage('Error Info'){
+    	echo "$err"
+    }
+    currentBuild.result = 'FAILURE'
+}
+finally{
+   stage('Email Notification'){
+        echo 'Post build action started'
+        stageBuild.emailStageExecution(currentBuild.result)
+        echo 'Post build action completed'
+    } 
+}
+
