@@ -36,7 +36,7 @@ job('pipeline_jobs/Stage-pipeline/Build'){
             }
             steps {
                 sonarRunnerBuilder {		
-                  properties('sonar.host.url=http://siwtapp0010.ced.corp.cummins.com:9000/ \nsonar.projectKey=StagePipelineApp \nsonar.projectName=StagePipelineApp \nsonar.projectVersion=1.0 \nsonar.projectBaseDir=../scm-checkout \nsonar.sources=.')		
+                  properties('sonar.host.url=http://localhost:9000/ \nsonar.projectKey=StagePipelineApp \nsonar.projectName=StagePipelineApp \nsonar.projectVersion=1.0 \nsonar.projectBaseDir=../scm-checkout \nsonar.sources=.')		
               }
             }
       	}
@@ -50,13 +50,13 @@ job('pipeline_jobs/Stage-pipeline/Deploy'){
               varPasswordPairs {
                   varPasswordPair {
                       var('IIS_PASS')
-                      password('#infy20185')
+                      password('123')
                   }
               }
           }
       }
     steps{
-       batchFile('"..\\scm-checkout\\DemoApp\\DemoApp\\obj\\Debug\\Package\\DemoApp.deploy.cmd" /Y /M:siwtapp0010.ced.corp.cummins.com /U:ced\\nx969a /P:%IIS_PASS%') 
+       batchFile('"..\\scm-checkout\\DemoApp\\DemoApp\\obj\\Debug\\Package\\DemoApp.deploy.cmd" /Y /M:siwtapp0010.ced.corp.cummins.com /U:xyz /P:%IIS_PASS%') 
     }
 }
 job('pipeline_jobs/Stage-pipeline/Email-Notification'){
